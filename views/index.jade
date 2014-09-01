@@ -1,5 +1,32 @@
-extends layout
+doctype html
+html
+	head
+	title= title
+	link(href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css')
+	link(rel='stylesheet', href='/stylesheets/style.css')
+	style.
+		html, body{
+			font-family: 'Open Sans', sans-serif;
+		}
+	body
+	h1	making dios
+	#framework
+		h2 choice of framework
+		h3 what is the point of using a game engine?
+		ul
+			li
+				| sprite motion, position, collisions
+			li
+				| device scaling, speed on mobile
+			li
+				| animation made simple
 
-block content
-  h1= title
-  p Welcome to #{title}
+		h3 options?
+		pre
+			a(href="http://html5gameengine.com/")
+				| http://html5gameengine.com/
+		ul
+			li
+				| pixi +fast -not as popular as phaser
+			li
+				| phaser +well documented
