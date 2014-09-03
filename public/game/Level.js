@@ -2,7 +2,6 @@
 Level = function(game) {
 
 	this.game = game;
-
 	this.platforms = null;
 	this.stars = null;
 };
@@ -16,13 +15,17 @@ Level.prototype = {
 	},
 
 	create: function() {
-
 		// add background for this level
-		this.game.add.sprite(0, 0, 'sky');
+		
+		game.add.tileSprite(0, 0, 1000, 1000, 'sky');
+
+    	game.world.setBounds(0, 0, 1000, 1000);
+		
+		//this.game.add.sprite(0, 0, 'sky');
 
 		//  The platforms group contains the ground and the 2 ledges we can jump on
     	this.platforms = game.add.group();
-
+    	this.game.physics.arcade.enable(this.platforms);
     	//  We will enable physics for any object that is created in this group
     	this.platforms.enableBody = true;
 
@@ -43,7 +46,7 @@ Level.prototype = {
 
 	    // create a group for stars
 	    this.stars = game.add.group();
-
+	    this.game.physics.arcade.enable(this.stars);
 	    this.stars.enableBody = true;
 	 
 	    //  Here we'll create 12 of them evenly spaced apart
@@ -61,7 +64,6 @@ Level.prototype = {
 	},
 
 	update: function() {
-		this.game.physics.arcade.collide(this.stars, this.platforms);
 	}
 
 };

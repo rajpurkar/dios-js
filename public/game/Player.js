@@ -17,13 +17,7 @@ Player.prototype = {
 		this.sprite = game.add.sprite(32, game.world.height - 150, 'dude');
 
 		//  We need to enable physics on the player
-		game.physics.arcade.enable(this.sprite);
-
-		//  Player physics properties. Give the little guy a slight bounce.
-		//this.sprite.body.bounce.y = 0.2;
-		//this.sprite.body.gravity.y = 300;
-		this.sprite.body.collideWorldBounds = true;
-
+		this.game.physics.arcade.enable(this.sprite);
 		//  Our two animations, walking left and right.
 		this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
 		this.sprite.animations.add('right', [5, 6, 7, 8], 10, true);
@@ -49,15 +43,16 @@ Player.prototype = {
 		this.label.y = this.sprite.y - 3;
 
 		//  Collide the player and the stars with the platforms
-		this.game.physics.arcade.collide(this.sprite, level.platforms);
+		
+		/*this.game.physics.arcade.collide(this.sprite, level.platforms);
+
+		this.game.physics.arcade.collide(this.sprite, person.sprite);
 
 		this.game.physics.arcade.overlap(this.sprite, level.stars, this.collectStar, null, this);
-
-		this.sprite.body.velocity.x = 0;
-		this.sprite.body.velocity.y = 0;
+		
+		*///this.sprite.body.setZeroVelocity();
 
 		(function handleHorizontal(obj){
-			console.log('hello');
 			if(obj.cursors.down.isDown)
 			{
 				obj.sprite.body.velocity.y = 250;    	

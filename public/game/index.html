@@ -2,8 +2,9 @@
 <html lang="en"> 
 <head> 
 	<meta charset="UTF-8" />
-	<title>Phaser - Making your first game, part 1</title>
+	<title>lol</title>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
+    <script type="text/javascript" src="Person.js"></script>
     <script type="text/javascript" src="Player.js"></script>
     <script type="text/javascript" src="Level.js"></script>
     <script type="text/javascript" src="HUD.js"></script>
@@ -17,16 +18,21 @@
 
 <script type="text/javascript">
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, '', { preload: preload, create: create, update: update, render: render });
 
 var player = null;
 var level = null;
 var hud = null;
+var person = null;
+var sprites = null;
 
 function preload()
 {
-	level = new Level(game);
+    level = new Level(game);
     level.preload();
+
+    person = new Person(game, 'Worker');
+    person.preload();
 
     player = new Player(game, 'Pranav');
     player.preload();
@@ -36,15 +42,53 @@ function preload()
 
 function create()
 {
+    game.physics.startSystem(Phaser.Physics.ARCADE);
     level.create();
     player.create();
+    person.create();
     hud.create();
+    game.camera.follow(player.sprite);
+    sprites = game.add.group();
+    //sprites.add(level.platforms);
+    //sprites.add(level.stars);
+    sprites.add(player.sprite);
+    sprites.add(person.sprite);
+    //sprites.setAll('body.collideWorldBounds', true);
+}
+
+function collectStar(player, star) {
+        // Removes the star from the screen
+        star.kill();
+
+        //  Add and update the score
+        hud.score += 10;
+        hud.scoreText.text = 'Score: ' + hud.score;
 }
 
 function update() 
 {
     level.update();
+    person.update();
     player.update();
+    this.game.physics.arcade.collide(sprites, level.platforms);
+    this.game.physics.arcade.collide(sprites);
+    this.game.physics.arcade.overlap(player.sprite, level.stars, collectStar, null, player);
+    this.game.physics.arcade.collide(level.stars, level.platforms);
+    /*
+     //  Collide the player and the stars with the platforms
+        this.game.physics.arcade.collide(this.sprite, level.platforms);
+        //  Collide the player and the stars with the platforms
+        this.game.physics.arcade.collide(this.sprite, level.platforms);
+        this.game.physics.arcade.collide(this.sprite, person.sprite);
+        
+        this.game.physics.arcade.collide(this.stars, this.platforms);
+    */
+   
+ }
+
+function render(){
+    //game.debug.cameraInfo(game.camera, 32, 32);
+    //game.debug.spriteCoords(player.sprite, 32, 500);
 }
 
 </script>
