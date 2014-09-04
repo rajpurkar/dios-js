@@ -70,8 +70,8 @@ function update()
     level.update();
     person.update();
     player.update();
-    this.game.physics.arcade.collide(sprites, level.platforms);
-    this.game.physics.arcade.collide(sprites);
+	this.game.physics.arcade.collide(sprites);
+	this.game.physics.arcade.collide(sprites, level.platforms);
     this.game.physics.arcade.overlap(player.sprite, level.stars, collectStar, null, player);
     this.game.physics.arcade.collide(level.stars, level.platforms);
     /*

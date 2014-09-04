@@ -16,7 +16,7 @@ Person.prototype = {
 
 	create: function () {
 
-		this.sprite = game.add.sprite(32, game.world.height - 150, 'char');
+		this.sprite = game.add.sprite(70, game.world.height - 300, 'char');
 		//  We need to enable physics on the player
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 	

@@ -18,6 +18,7 @@ Player.prototype = {
 
 		//  We need to enable physics on the player
 		this.game.physics.arcade.enable(this.sprite);
+		this.sprite.body.collideWorldBounds = true;
 		//  Our two animations, walking left and right.
 		this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
 		this.sprite.animations.add('right', [5, 6, 7, 8], 10, true);
