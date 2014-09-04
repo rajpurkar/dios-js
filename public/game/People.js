@@ -1,11 +1,9 @@
 Person = function(game, name) {
-
 	this.game = game;
-	this.sprite = null;
+	this.sprites = null;
 	this.cursors = null;
 	this.label = null;
 	this.name = name;
-	this.cg = null;
 };
 
 Person.prototype = {
@@ -15,8 +13,8 @@ Person.prototype = {
 	},
 
 	create: function () {
-
-		this.sprite = game.add.sprite(70, game.world.height - 300, 'char');
+		this.sprites = game.add.group();
+		this.sprite = this.sprites.create(70, game.world.height - 300, 'char');
 		//  We need to enable physics on the player
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 	
@@ -31,7 +29,9 @@ Person.prototype = {
 
 	update: function() {
 		//  Collide the player and the stars with the platforms
-		
+		this.game.physics.arcade.collide(this.sprite, level.platforms);
+
+
 		this.sprite.body.velocity.y = 0;    
 		this.sprite.body.velocity.x = 0;
 		//this.sprite.body.setZeroVelocity();

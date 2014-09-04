@@ -4,11 +4,30 @@ Level = function(game) {
 	this.game = game;
 	this.platforms = null;
 	this.stars = null;
+	this.map = null;
+	this.layer1 = null;
+	this.layer2 = null;
+	this.layer3 = null;
 };
+
+function gofull() {
+
+    if (game.scale.isFullScreen)
+    {
+        game.scale.stopFullScreen();
+    }
+    else
+    {
+        game.scale.startFullScreen();
+    }
+
+}
 
 Level.prototype = {
 
 	preload: function() {
+		game.load.tilemap('map', 'assets/test.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.image('tiles', 'assets/tiles.png');
 		this.game.load.image('sky', 'assets/sky.png');
     	this.game.load.image('ground', 'assets/platform.png');
     	this.game.load.image('star', 'assets/star.png');
@@ -16,11 +35,29 @@ Level.prototype = {
 
 	create: function() {
 		// add background for this level
-		
-		game.add.tileSprite(0, 0, 1000, 1000, 'sky');
+		game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+		//game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+		game.input.onDown.add(gofull, this);
 
-    	game.world.setBounds(0, 0, 1000, 1000);
-		
+		game.stage.backgroundColor = '#fff';
+		//game.add.tileSprite(0, 0, 1000, 1000, 'sky');
+
+    	//game.world.setBounds(0, 0, 1000, 1000);
+    	this.map = game.add.tilemap('map');
+    	this.map.addTilesetImage('tiles');
+    	this.layer1 = this.map.createLayer('background');
+    	//this.layer2 = this.map.createLayer('battlezone');
+    	this.layer3 = this.map.createLayer('obstacles');
+    	this.layer1.resizeWorld();
+    	//this.layer2.resizeWorld();
+    	this.layer3.resizeWorld();
+
+        /*
+        this.map.addTilesetImage('tiles');
+        this.layer1 = this.map.createLayer('background');
+        this.layer2 = this.map.createLayer('battlezone');
+        this.layer3 = this.map.createLayer('obstacles');
+		*/
 		//this.game.add.sprite(0, 0, 'sky');
 
 		//  The platforms group contains the ground and the 2 ledges we can jump on
