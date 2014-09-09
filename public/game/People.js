@@ -1,20 +1,20 @@
-Person = function(game, name) {
+People = function(game, name) {
 	this.game = game;
-	this.sprites = null;
+	this.sprite = null;
 	this.cursors = null;
 	this.label = null;
 	this.name = name;
 };
 
-Person.prototype = {
+People.prototype = {
 
 	preload: function () {
 		this.game.load.image('char', 'assets/charizard.gif');
 	},
 
 	create: function () {
-		this.sprites = game.add.group();
-		this.sprite = this.sprites.create(70, game.world.height - 300, 'char');
+
+		this.sprite = game.add.sprite(game.world.width/2 - 70, game.world.height/2, 'char');
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		this.sprite.body.collideWorldBounds = true;
 		this.label = this.game.add.text(this.sprite.x, this.sprite.y, this.name, { font: '8pt Helvetica Neue', fill: '#000' });

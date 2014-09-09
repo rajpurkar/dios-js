@@ -1,5 +1,5 @@
 var newGame = new (function(game){
-	this.person = null;
+	this.people = null;
 	this.player = null;
 	this.level = null;
 	this.hud = null;
@@ -16,8 +16,8 @@ var newGame = new (function(game){
 		this.level = new Level(this.game);
 		this.level.preload();
 
-		this.person = new Person(this.game, 'Worker');
-		this.person.preload();
+		this.people = new People(this.game, 'Worker');
+		this.people.preload();
 
 		this.player = new Player(this.game, 'Pranav');
 		this.player.preload();
@@ -31,26 +31,26 @@ var newGame = new (function(game){
 		this.tilemap.create();
 		this.level.create();
 		this.player.create();
-		this.person.create();
+		this.people.create();
 		this.hud.create();
 
 		this.game.camera.follow(this.player.sprite);
 
 		this.sprites = this.game.add.group();
 		this.sprites.add(this.player.sprite);
-		this.sprites.add(this.person.sprite);
+		this.sprites.add(this.people.sprite);
 	}
 
 	this.update = function() 
 	{
 		this.tilemap.update();
 		this.level.update();
-		this.person.update();
+		this.people.update();
 		this.player.update();
 
 		//somehow order matters!
 		this.game.physics.arcade.collide(this.sprites, this.tilemap.layer3);
-		this.game.physics.arcade.collide(this.player.sprite, this.tilemap.layer2);
+		this.game.physics.arcade.collide(this.people.sprite, this.tilemap.layer2);
 		this.game.physics.arcade.collide(this.sprites);
 		this.game.physics.arcade.collide(this.sprites, this.level.platforms);
 	}
