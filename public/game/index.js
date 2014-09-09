@@ -36,7 +36,7 @@ var newGame = new (function(game){
 		this.level.create();
 		this.player.create();
 		this.people.create();
-		this.bubble.create();
+		this.bubble.create(this.player);
 		this.hud.create();
 
 		this.game.camera.follow(this.player.sprite);
@@ -62,8 +62,8 @@ var newGame = new (function(game){
 	}
 
 	this.render = function(){
-		this.game.debug.cameraInfo(this.game.camera, 32, 32);
-		this.game.debug.spriteCoords(this.player.sprite, 32, 100);
+		//this.game.debug.cameraInfo(this.game.camera, 32, 32);
+		//this.game.debug.spriteCoords(this.player.sprite, 32, 110);
 	}
 })(game);
 

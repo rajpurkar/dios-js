@@ -10,7 +10,7 @@ SpeechBubble = function(game, x, y, width, text) {
     var height = 18;
     
     // Set up our text and run our custom wrapping routine on it
-    this.bitmapText = this.game.make.bitmapText(x + 12, y + 4, '8bitoperator', text, 22);
+    this.bitmapText = this.game.make.bitmapText(x + 12, y + 4, '8bitoperator', text, 10);
     SpeechBubble.wrapBitmapText(this.bitmapText, width);
     
     // Calculate the width and height needed for the edges
@@ -21,7 +21,6 @@ SpeechBubble = function(game, x, y, width, text) {
     if (bounds.height + 14 > height) {
         height = bounds.height + 14;
     }
-    
     // Create all of our corners and edges
     this.borders = [
         this.game.make.tileSprite(x + 9, y + 9, width - 9, height - 9, 'bubble-border', 4),
@@ -76,6 +75,7 @@ SpeechBubble.wrapBitmapText = function (bitmapText, maxWidth) {
 
 Bubble = function (game){
 	this.game = game;
+	this.sbubble = null;
 };
 
 Bubble.prototype = {
@@ -85,8 +85,11 @@ Bubble.prototype = {
         this.game.load.bitmapFont('8bitoperator', 'assets/font.png', 'assets/font.xml');
 	},
 	
-	create: function(){
-		var bubble = this.game.world.add(new SpeechBubble(game, 110, 190, 256, "This is some tail woah dadklsjdal "));
+	create: function(player){
+		var sbub = this.game.world.add(new SpeechBubble(game, 110, 190, 100, "This is some tail woah dadklsjdal "));
+		player.sprite.addChild(sbub);
+		sbub.x = Math.floor(player.sprite.width/2);
+		sbub.y = Math.floor(0);
 	},
 	
 	update: function(){

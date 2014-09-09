@@ -21,7 +21,7 @@ Player.prototype = {
 	addLabel: function(){
 		this.label = this.game.add.text(0,0, this.name, { font: '10px Helvetica Neue', fill: '#000' });
 		this.label.x = Math.floor((this.sprite.width - this.label.width)*0.5);
-		this.label.y = Math.floor(-10);
+		this.label.y = Math.floor(this.sprite.height);
 		this.label.align = 'center';
 		this.sprite.addChild(this.label);
 	},
