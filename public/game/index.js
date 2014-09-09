@@ -3,6 +3,7 @@ var newGame = new (function(game){
 	this.player = null;
 	this.level = null;
 	this.hud = null;
+	this.path = null;
 	this.tilemap = null;
 	this.person = null;
 	this.sprites = null;
@@ -25,10 +26,11 @@ var newGame = new (function(game){
 		
 		this.bubble = new Bubble(this.game);
 		this.bubble.preload();
-
+		
 		this.hud = new HUD(this.game);
 	}
-
+	
+	
 	this.create = function()
 	{
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -38,7 +40,11 @@ var newGame = new (function(game){
 		this.people.create();
 		this.bubble.create(this.player);
 		this.hud.create();
-
+		
+		/*Path stuff which is not working*/
+		//this.path = new Path(this.game, this.tilemap, [0], this.player.sprite);
+		//this.game.input.onDown.add(doSomething,this);
+		
 		this.game.camera.follow(this.player.sprite);
 
 		this.sprites = this.game.add.group();
@@ -62,9 +68,10 @@ var newGame = new (function(game){
 	}
 
 	this.render = function(){
-		//this.game.debug.cameraInfo(this.game.camera, 32, 32);
-		//this.game.debug.spriteCoords(this.player.sprite, 32, 110);
+		this.game.debug.cameraInfo(this.game.camera, 32, 32);
+		this.game.debug.spriteCoords(this.player.sprite, 32, 110);
 	}
 })(game);
+
 
 var game = new Phaser.Game(600, 300, Phaser.CANVAS, '', { preload: newGame.preload, create: newGame.create, update: newGame.update, render: newGame.render });
