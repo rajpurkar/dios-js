@@ -7,7 +7,7 @@ Tilemap = function(game){
 	this.layer3 = null;
 };
 
-function gofull(game){
+function gofull(){
 	if (game.scale.isFullScreen)
 	{
 		game.scale.stopFullScreen();
