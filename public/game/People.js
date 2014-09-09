@@ -9,25 +9,27 @@ People = function(game, name) {
 People.prototype = {
 
 	preload: function () {
-		this.game.load.image('char', 'assets/charizard.gif');
+		this.game.load.spritesheet('char', 'assets/dude.png',32,48);
+	},
+	
+	addLabel: function(){
+		this.label = this.game.add.text(0,0, this.name, { font: '10px Helvetica Neue', fill: '#000' });
+		this.label.x = Math.floor((this.sprite.width - this.label.width)*0.5);
+		this.label.y = Math.floor(-10);
+		this.label.align = 'center';
+		this.sprite.addChild(this.label);
 	},
 
 	create: function () {
-
-		this.sprite = game.add.sprite(game.world.width/2 - 70, game.world.height/2, 'char');
+		this.sprite = this.game.add.sprite(this.game.world.width/2 - 70, this.game.world.height/2, 'char');
 		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 		this.sprite.body.collideWorldBounds = true;
-		this.label = this.game.add.text(this.sprite.x, this.sprite.y, this.name, { font: '8pt Helvetica Neue', fill: '#000' });
-		this.label.align = 'center';
+		this.addLabel();
 	},
 
 	update: function() {
 		//  Collide the player and the stars with the platforms
 		this.sprite.body.velocity.y = 0;    
 		this.sprite.body.velocity.x = 0;
-		this.label.x = this.sprite.x;
-		this.label.y = this.sprite.y - 3;
-
-		
 	}
 };
