@@ -6,6 +6,7 @@ var newGame = new (function(game){
 	this.tilemap = null;
 	this.person = null;
 	this.sprites = null;
+	this.bubble = null;
 	this.game = game; 
 	
 	this.preload = function()
@@ -21,6 +22,9 @@ var newGame = new (function(game){
 
 		this.player = new Player(this.game, 'Pranav');
 		this.player.preload();
+		
+		this.bubble = new Bubble(this.game);
+		this.bubble.preload();
 
 		this.hud = new HUD(this.game);
 	}
@@ -32,6 +36,7 @@ var newGame = new (function(game){
 		this.level.create();
 		this.player.create();
 		this.people.create();
+		this.bubble.create();
 		this.hud.create();
 
 		this.game.camera.follow(this.player.sprite);
@@ -47,6 +52,7 @@ var newGame = new (function(game){
 		this.level.update();
 		this.people.update();
 		this.player.update();
+		this.bubble.update();
 
 		//somehow order matters!
 		this.game.physics.arcade.collide(this.sprites, this.tilemap.layer3);
