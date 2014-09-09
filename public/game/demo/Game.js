@@ -78,7 +78,7 @@ function usePath(path){
 	
 	for(var i =0; i < path.length; i++){
 		var wc = getWorldCoords(path[i]);
-		tween.to({x: wc.x, y:wc.y}, 100);
+		tween.to({x: wc.x, y:wc.y}, 100, Phaser.Easing.Linear.None);
 	}
 
 	tween.interpolation(Phaser.Math.bezierInterpolation)
@@ -86,12 +86,6 @@ function usePath(path){
 	.onComplete.add(function(){
 		
 	});
-	/*
-	path.map(function(coord){
-		var currentTile = map.getTile(coord.x, coord.y); 
-		console.log(currentTile.worldX, currentTile.worldY);
-	});
-	*/
 	
 }
 
