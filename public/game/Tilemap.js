@@ -25,8 +25,8 @@ Tilemap.prototype = {
 	},
 
 	create: function() {
-		this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
-		this.game.input.onDown.add(gofull, this);
+		//this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+		//this.game.input.onDown.add(gofull, this);
 		this.map = this.game.add.tilemap('map');
 		this.map.addTilesetImage('tiles');	
 		this.layer1 = this.map.createLayer('background');
