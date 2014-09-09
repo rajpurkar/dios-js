@@ -18,16 +18,23 @@ Player.prototype = {
 		this.sprite.animations.add('down', [4], 10, true);
 	},
 
-	createPlayerGroup: function () {
-		this.sprite = game.add.sprite(game.world.width/2, game.world.height/2, 'dude');
-		this.label = this.game.add.text(this.sprite.x, 	this.sprite.y, this.name, { font: '8pt Helvetica Neue', fill: '#000' });
+	addLabel: function(){
+		this.label = this.game.add.text(0,0, this.name, { font: '10px Helvetica Neue', fill: '#000' });
+		this.label.x = Math.floor((this.sprite.width - this.label.width)*0.5);
+		this.label.y = Math.floor((this.sprite.height - this.label.height)*-0.1);
 		this.label.align = 'center';
+		this.sprite.addChild(this.label);
+	},
+
+	createPlayer: function () {
+		this.sprite = this.game.add.sprite(this.game.world.width/2, this.game.world.height/2, 'dude');
+		this.addLabel();
 	},
 
 
 
 	create: function () {
-		this.createPlayerGroup();
+		this.createPlayer();
 		//  We need to enable physics on the player
 		this.game.physics.arcade.enable(this.sprite);
 		this.sprite.body.collideWorldBounds = true;
@@ -83,11 +90,9 @@ Player.prototype = {
 	},
 
 	update: function() {
-		this.label.x = this.sprite.x;
-		this.label.y = this.sprite.y - 3;
 		var vMove = this.handleVertical();
 		var hMove = this.handleHorizontal();
-		
+
 		if(!vMove && !hMove){
 			this.handleStop();
 		}
