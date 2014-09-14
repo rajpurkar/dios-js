@@ -6,14 +6,10 @@ function preload() {
 }
 
 var player;
-var platforms;
-var cursors;
-var doctor;
-var doctor2;
-var nurse;
-var patient;
-var patient2;
 var people;
+var list = ['doctor', 'doctor2', 'patient','patient', 'nurse'];
+var m = {};
+var states = [];
 
 var init_player = function(player){
 	game.physics.arcade.enable(player);
@@ -24,6 +20,32 @@ var init_player = function(player){
 	player.animations.add('right', [12, 13, 14, 15], 10, true);
 };
 
+var createNPCs = function(){
+	people = new Phaser.Group(game, game.world, 'people', true, true, Phaser.Physics.Arcade);
+	player = game.add.sprite(32, 32, 'dude');
+	people.add(player);
+	people.createMultiple(5,'dude', 0, true);
+	/*
+	//  We will enable physics for any object that is created in this group
+	doctor = game.add.sprite(62, 150, 'dude');
+	doctor2 = game.add.sprite(500, 50, 'dude');
+	nurse = game.add.sprite(162, 200, 'dude');
+	patient = game.add.sprite(202, 400, 'dude');
+	patient2 = game.add.sprite(450, 200, 'dude');
+
+	people.add(doctor);
+	*/
+	/*people.add(doctor2);
+	people.add(nurse);
+	people.add(patient);
+	people.add(patient2);
+	*/
+	for(var i = 0; i< people.length; i++){
+		var p = people.getAt(i);
+		m[list[i]] = p;
+	}
+};
+
 function create() {
 
 	//  We're going to be using physics, so enable the Arcade Physics system
@@ -32,32 +54,9 @@ function create() {
 	//  A simple background for our game
 	game.add.sprite(0, 0, 'sky');
 
-	//  The platforms group contains the ground and the 2 ledges we can jump on
-	platforms = game.add.group();
-	people = game.add.group();
-
-	//  We will enable physics for any object that is created in this group
-	platforms.enableBody = true;
-
-	player = game.add.sprite(32, 32, 'dude');
-	doctor = game.add.sprite(62, 150, 'dude');
-	doctor2 = game.add.sprite(500, 50, 'dude');
-	nurse = game.add.sprite(162, 200, 'dude');
-	patient = game.add.sprite(202, 400, 'dude');
-	patient2 = game.add.sprite(450, 200, 'dude');
-	
-	people.add(doctor);
-	people.add(doctor2);
-	people.add(nurse);
-	people.add(patient);
-	people.add(patient2);
-	people.physicsBodyType =Phaser.Physics.ARCADE;
-	people.enableBody = true;
-	
+	createNPCs();
 	init_player(player);
 	people.forEach(init_player);
-
-	cursors = game.input.keyboard.createCursorKeys();
 
 	var update_npc = function(npc, goal, speed){
 		var diffx = npc.x - goal.x;
@@ -100,7 +99,8 @@ function create() {
 		return Math.abs(c1.x - c2.x) <= t && Math.abs(c1.y - c2.y) <= t;
 	};
 
-	var go_to_place = function(npc,coord){
+	var go_to_place = function(name,coord){
+		var npc = getnpc(name);
 		var close_enough = 30;
 		return function(){
 			if(within(npc, coord(), close_enough) === true){
@@ -113,7 +113,9 @@ function create() {
 		};
 	};
 
-	var wait_for = function(npc,coord){
+	var wait_for = function(name,name2){
+		var npc = getnpc(name);
+		var coord = getnpc(name2);
 		var close_enough = 30;
 		return function(){
 			if(within(npc, coord(), close_enough) === true){
@@ -122,7 +124,8 @@ function create() {
 		};
 	};
 
-	var wait_for_action = function(npc,act){
+	var wait_for_action = function(name,act){
+		var npc = getnpc(name);
 		return function(){
 			return npc.action === act;
 		};
@@ -135,7 +138,12 @@ function create() {
 		npc.body.velocity.y = 0;
 	};
 
-	var npc_state = function(npc,states){
+	var getnpc = function(name){
+		return m[name];	
+	}
+	
+	var npc_state = function(name,states){
+		var npc = getnpc(name);
 		npc.state_m = {
 			state:0,
 			paused:false,
@@ -167,7 +175,8 @@ function create() {
 		return npc.state_m;
 	};
 
-	var say_pause = function(text,npc,time){
+	var say_pause = function(text,name,time){
+		var npc = getnpc(name);
 		return {
 			async:true,
 			init:function(){
@@ -188,7 +197,8 @@ function create() {
 		};
 	};
 
-	var pause = function(npc,time){
+	var pause = function(name,time){
+		var npc = getnpc(name);
 		return {
 			async:true,
 			init:function(){
@@ -201,48 +211,45 @@ function create() {
 			time:time
 		};
 	};
-
-	doctor_state = npc_state(doctor,
-							 [ say_pause("I am a doctor", doctor, 2000),
-							  go_to_place(doctor, function() { return patient; }),
-							  say_pause("(cutting cord...)",doctor, 2000),
-							  say_pause("(wrapping bandage...)",doctor, 2000),
-							  go_to_place(doctor, function() { return nurse; }),
-							  say_pause("(instructing nurse...)", doctor, 2000),
-							  pause(doctor,2000)
-							 ]
-							);
-
-	doctor2_state = npc_state(doctor2,
-							  [ say_pause("I am a doctor", doctor2, 2000),
+	
+	
+	states.push(npc_state('doctor',
+								 [ say_pause("I am a doctor", 'doctor', 2000),
+								  //go_to_place('doctor', function() { return 'patient'; }),
+								  say_pause("(cutting cord...)",'doctor', 2000),
+								  say_pause("(wrapping bandage...)",'doctor', 2000),
+								  //go_to_place('doctor', function() { return 'nurse'; }),
+								  //say_pause("(instructing nurse...)", 'nurse', 2000),
+								  pause('doctor',2000)
+								 ]));
+	/*
+	doctor2_state = npc_state('doctor2',
+							  [ say_pause("I am a doctor", m[list[1]], 2000),
 							   wait_for_action(nurse, "(call name...)"),
 							   go_to_place(doctor2, function() { return patient2; }),
 							   say_pause("(pull cloth...)", doctor2, 2000),
 							   say_pause("(unwrap bandage...)", doctor2, 2000),
 							   say_pause("(give pill...)", doctor2, 2000),
-							   go_to_place(doctor2, function(){ return {x:500, y:50}})
-							  ]
-							 );
+							   go_to_place(doctor2, function(){ return {x:500, y:50};})
+							  ]);
 
-	patient_state = npc_state(patient,
+	patient_state = npc_state(people.getAt(2),
 							  [ say_pause("I am lying in the hospital.", patient, 2000),
 							   wait_for(patient, function(){ return doctor; }),
 							   pause(patient, 5000),
 							   say_pause("Now I am leaving the hospital.", patient, 2000),
 							   pause(patient, 1000),
-							  ]
-							   );
+							  ]);
 
-							   patient2_state = npc_state(patient2,
+							   patient2_state = npc_state(people.getAt(3),
 							   [ say_pause("I arrive at the hospital.", patient2, 2000),
 							   wait_for(patient2, function(){ return doctor2; }),
 							   pause(patient2, 7000),
 							   say_pause("Now I am leaving the hospital.", patient, 2000),
 							   pause(patient2, 1000),
-							  ]
-							 );
+							  ]);
 
-	nurse_state = npc_state(nurse,
+	nurse_state = npc_state(people.getAt(4),
 							[ say_pause("I am a nurse.", nurse, 2000),
 							 wait_for_action(doctor,"(instructing nurse...)"),
 							 pause(nurse, 1000),
@@ -252,18 +259,13 @@ function create() {
 							 go_to_place(nurse, function() { return {x:300, y:300}; }),
 							]
 							 );
+							 */
 							 }
 
-							 function update() {
-							 var characters = [player, doctor, patient, nurse, patient2];
-							for (var i in characters){
-		game.physics.arcade.collide(characters[i], platforms);
-		//characters[i].body.particleFriction = 0.8;// true;
-	}
-
-	doctor_state.run();
-	doctor2_state.run();
-	patient_state.run();
-	patient2_state.run();
-	nurse_state.run();
-}
+	 function update() {
+	 game.physics.arcade.collide(people);
+	 game.physics.arcade.collide(people, player);
+	 states.forEach(function(state){
+	 state.run();
+	 });
+ 	}
