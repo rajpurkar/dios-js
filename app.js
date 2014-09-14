@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public'), {maxAge: '1d'}));
 
-app.get('/games', function(req, res){
+app.get('/generate', function(req, res){
 	var select = req.query.q || JSON.stringify(inputData);
 	res.render('game', {data: JSON.parse(select)});
 });
