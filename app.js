@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var inputData = require('./public/ethan/input.json');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -22,8 +22,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public'), {maxAge: '1d'}));
 
+app.get('/games', function(req, res){
+	var select = req.query.q || JSON.stringify(inputData);
+	res.render('game', {data: JSON.parse(select)});
+});
 app.use('/', routes);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
