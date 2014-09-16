@@ -1,4 +1,3 @@
-
 Level = function(game) {
 	this.game = game;
 	this.platforms = null;
@@ -6,9 +5,9 @@ Level = function(game) {
 
 Level.prototype = {
 	preload: function() {
-		this.game.load.image('sky', 'assets/sky.png');
-		this.game.load.image('ground', 'assets/platform.png');
-		this.game.load.image('star', 'assets/star.png');
+		this.game.load.image('sky', '/game/assets/sky.png');
+		this.game.load.image('ground', '/game/assets/platform.png');
+		this.game.load.image('star', '/game/assets/star.png');
 	},
 
 	create: function() {

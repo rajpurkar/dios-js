@@ -8,6 +8,7 @@ Path = function (game, tilemap, walkables, sprite){
 	this.layer = tilemap.layer3;
 	this.pathfinder = this.game.plugins.add(Phaser.Plugin.PathFinderPlugin);
 	this.pathfinder.setGrid(tilemap.map.layers[2].data, walkables);
+	this.callback;
 };
 
 Path.prototype = {
@@ -22,20 +23,4 @@ Path.prototype = {
 		var currentTile = this.tilemap.getTile(coord.x, coord.y); 
 		return {x:currentTile.worldX, y: currentTile.worldY};
 	},
-	
-	cb: function(path){
-		path = path || [];
-		return path;
-		var tween = this.game.add.tween(this.player.sprite.body);
-		for(var i =0; i < path.length; i++){
-			var wc = this.getWorldCoords(path[i]);
-			tween.to({x: wc.x, y:wc.y}, 100, Phaser.Easing.Linear.None);
-		}
-		tween.interpolation(Phaser.Math.bezierInterpolation)
-		.start();
-	},
-	
-	doSomething: function (){
-			this.path.findPathTo(this.game.input.activePointer.worldX, 			this.game.input.activePointer.worldY, this.cb);
-	}
 };

@@ -20,8 +20,8 @@ function gofull(){
 
 Tilemap.prototype = {
 	preload: function() {
-		this.game.load.tilemap('map', 'assets/test.json', null, Phaser.Tilemap.TILED_JSON);
-		this.game.load.image('tiles', 'assets/tiles.png');
+		this.game.load.tilemap('map', '/game/assets/test.json', null, Phaser.Tilemap.TILED_JSON);
+		this.game.load.image('tiles', '/game/assets/tiles.png');
 	},
 
 	create: function() {

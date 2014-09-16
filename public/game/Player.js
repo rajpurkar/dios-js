@@ -8,7 +8,7 @@ Player = function(game, name) {
 
 Player.prototype = {
 	preload: function () {
-		this.game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+		this.game.load.spritesheet('dude', '/game/assets/dude.png', 32, 48);
 	},
 
 	addAnimations: function() {
@@ -30,8 +30,6 @@ Player.prototype = {
 		this.sprite = this.game.add.sprite(this.game.world.width/2, this.game.world.height/2, 'dude');
 		this.addLabel();
 	},
-
-
 
 	create: function () {
 		this.createPlayer();

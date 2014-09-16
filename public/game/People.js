@@ -1,35 +1,36 @@
-People = function(game, name) {
+People = function(game){
 	this.game = game;
-	this.sprite = null;
-	this.cursors = null;
-	this.label = null;
-	this.name = name;
+	this.mapping = {};
+	this.group;
 };
 
 People.prototype = {
+	preload: function(){
+		//this.game.load.spritesheet('dude', '/game/assets/dude.png', 32, 48);
+	},
 
-	preload: function () {
-		this.game.load.spritesheet('char', 'assets/dude.png',32,48);
+	create: function(){
+		//  We're going to be using physics, so enable the Arcade Physics system
+		this.createNPCs();
 	},
 	
-	addLabel: function(){
-		this.label = this.game.add.text(0,0, this.name, { font: '10px Helvetica Neue', fill: '#000' });
-		this.label.x = Math.floor((this.sprite.width - this.label.width)*0.5);
-		this.label.y = Math.floor(-10);
-		this.label.align = 'center';
-		this.sprite.addChild(this.label);
+	getnpc: function(name){
+		return this.mapping[name];	
 	},
 
-	create: function () {
-		this.sprite = this.game.add.sprite(this.game.world.width/2 - 70, this.game.world.height/2, 'char');
-		this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-		this.sprite.body.collideWorldBounds = true;
-		this.addLabel();
+	setnpc: function(name, npc){
+		this.mapping[name] = npc;
 	},
 
-	update: function() {
-		//  Collide the player and the stars with the platforms
-		this.sprite.body.velocity.y = 0;    
-		this.sprite.body.velocity.x = 0;
+	update: function(){
+	},
+
+	createNPCs: function(){
+		this.group = new Phaser.Group(this.game, this.game.world, 'people', false, true, Phaser.Physics.Arcade);
+		for (var i = 0; i < data.players.length; i++){
+			var person = new Person(this.game, data.players[i], this);
+			this.setnpc(data.players[i], person);
+			this.group.add(person);
+		}
 	}
 };
