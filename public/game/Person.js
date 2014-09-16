@@ -88,39 +88,65 @@ Person.prototype.pause_animation = function(npc){
 		npc.body.velocity.x = 0;
 		npc.body.velocity.y = 0;
 	};
+
+Person.prototype.moveRandom = function(time){
+	var that = this;
+	return{
+		async:true,
+			init:function(){
+				that.body.x+= Math.random()*2;
+				that.body.y+= Math.random()*2;
+				console.log(that.name + ' here');
+				that.state_m.paused = true;
+			},
+			cleanup:function(){
+				that.state_m.paused = false;
+			},
+			time:time
+	}
+	
+}
 	
 Person.prototype.npc_state = function(states){
-		var npc = this;//.getnpc(name);
-		npc.state_m = {
-			state:0,
-			paused:false,
-			states:states,
-			next:function(){
-				npc.state_m.state = npc.state_m.state + 1;
-				if(npc.state_m.state == npc.state_m.states.length){
-					npc.state_m.state = 0;
-				}
-			},
-			run:function(){
-				if(npc.state_m.paused === false){
-					var func = npc.state_m.states[npc.state_m.state];
-					if(func.async === true){
-						func.init();
-						window.setTimeout(function(){
-							func.cleanup();
-						},func.time);
+	var npc = this;//.getnpc(name);
+	var that = this;
+	npc.state_m = {
+		state:0,
+		paused:false,
+		states:states,
+		next:function(){
+			npc.state_m.state = npc.state_m.state + 1;
+			if(npc.state_m.state == npc.state_m.states.length){
+				npc.state_m.state = 0;
+			}
+		},
+		run:function(){
+			if(npc.state_m.paused === false){
+				var func = npc.state_m.states[npc.state_m.state];
+				if(func.async === true){
+					func.init();
+					window.setTimeout(function(){
+						func.cleanup();
+					},func.time);
+					npc.state_m.next();
+				}else{
+					if(func() == true){
 						npc.state_m.next();
-					}
-					else{
-						if(func() == true){
-							npc.state_m.next();
-						}
 					}
 				}
 			}
-		};
-		return npc.state_m;
+		}
 	}
+	return npc.state_m;
+}
+
+	Person.prototype.addSpeech = function(text){
+		this.sbub = this.game.world.add(new SpeechBubble(game, 110, 190, 100, text));
+		this.addChild(this.sbub);
+		this.sbub.x = Math.floor(this.width/2);
+		this.sbub.y = Math.floor(0);
+	};
+
 	Person.prototype.say = function(text,time){
 		var that = this;
 		var npc = this;
@@ -132,17 +158,11 @@ Person.prototype.npc_state = function(states){
 				if(npc.dialog !== undefined){
 					npc.dialog.destroy();
 				}
-				npc.sbub = that.game.world.add(new SpeechBubble(game, 110, 190, 100, text));
-				npc.addChild(npc.sbub);
-        		npc.sbub.x = Math.floor(npc.width/2);
-				npc.sbub.y = Math.floor(0);
-				//npc.dialog = that.game.add.text(npc.x, npc.y-20, text, { font: '12px monaco', fill: '#000000' });
+				npc.addSpeech(text);
 				npc.action = text;
 			},
 			cleanup:function(){
 				npc.sbub.kill();
-				
-				//npc.dialog.destroy();
 				npc.action = null;
 				npc.state_m.paused = false;
 			},
