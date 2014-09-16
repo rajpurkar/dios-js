@@ -8,7 +8,6 @@ HUD = function(game) {
 HUD.prototype = {
 
 	create: function() {
-		this.scoreText = this.game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+		this.scoreText = this.game.add.text(16, 16, 'Hospital', { fontSize: '32px', fill: '#000' });
 	},
-
 };
