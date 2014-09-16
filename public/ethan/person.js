@@ -1,24 +1,30 @@
-var game = new Phaser.Game(600, 600, Phaser.AUTO, 'phaser', { preload: preload, create: create, update: update });
-
-function preload() {
-	game.load.spritesheet('dude', '/game/assets/dude.png', 32, 48);
-}
-var people;
-var m = {};
-var states = [];
-
-var Person = function(name){
-	Phaser.Sprite.apply(this, [game, game.world.randomX, game.world.randomY, 'dude']);
+Person = function(game, name){
+	this.game = game;
+	Phaser.Sprite.apply(this, [this.game, this.game.world.randomX, this.game.world.randomY, 'dude']);
 	this.name = name;
+	this.game.physics.arcade.enable(this);
+	this.body.collideWorldBounds = true;
+	this.animations.add('left', [0, 1, 2, 3], 10, true);
+	this.animations.add('right', [5, 6, 7, 8], 10, true);
+	this.animations.add('up', [4], 10, true);
+	this.animations.add('down', [4], 10, true);
+	this.addLabel(this.name);
 };
 
 Person.prototype = Phaser.Sprite.prototype; 
 Person.prototype.constructor = Phaser;
 
+Person.prototype.addLabel = function(name){
+	var label = this.game.add.text(0,0, name, { font: '10px Helvetica Neue', fill: '#000' });
+	label.x = Math.floor((this.width - this.width)*0.5);
+	label.y = Math.floor(this.height);
+	label.align = 'center';
+	this.addChild(label);
+};
 
 Person.prototype.within = function(c1,c2,t){
 		return Math.abs(c1.x - c2.x) <= t && Math.abs(c1.y - c2.y) <= t;
-	};
+};
 
 Person.prototype.go_to_loc = function(coord){
 		var npc = this;
@@ -120,7 +126,7 @@ Person.prototype.npc_state = function(states){
 				if(npc.dialog !== undefined){
 					npc.dialog.destroy();
 				}
-				npc.dialog = game.add.text(npc.x, npc.y-20, text, { font: '12px monaco', fill: '#000000' });
+				npc.dialog = that.game.add.text(npc.x, npc.y-20, text, { font: '12px monaco', fill: '#000000' });
 				npc.action = text;
 			},
 			cleanup:function(){
@@ -183,65 +189,3 @@ Person.prototype.npc_state = function(states){
 			}
 		}
 	};
-
-var init_player = function(player){
-	game.physics.arcade.enable(player);
-	player.body.collideWorldBounds = true;
-	player.animations.add('left', [0, 1, 2, 3], 10, true);
-	player.animations.add('right', [5, 6, 7, 8], 10, true);
-	player.animations.add('up', [4], 10, true);
-	player.animations.add('down', [4], 10, true);
-};
-
-var addLabel = function(player, name){
-		var label = this.game.add.text(0,0, name, { font: '10px Helvetica Neue', fill: '#000' });
-		label.x = Math.floor((player.width - player.width)*0.5);
-		label.y = Math.floor(player.height);
-		label.align = 'center';
-		player.addChild(label);
-};
-
-var createNPCs = function(){
-	people = new Phaser.Group(game, game.world, 'people', true, true, Phaser.Physics.Arcade);
-	//player = game.add.sprite(32, 32, 'dude');
-	 for (var i = 0; i < data.players.length; i++)
-    {
-			var person = new Person(data.players[i]);
-			m[data.players[i]] = person;
-			init_player(person);	
-			people.add(person);
-			addLabel(person, data.players[i]);
-	}
-};
-
-function getnpc(name){
-		return m[name];	
-}
-
-function convertScriptToFunction(){
-	data.acting.forEach(function(npcObj){
-		var npc = getnpc(npcObj.name);
-		var npc_actions = [];
-		npcObj.fns.forEach(function(fn){
-			npc_actions.push((npc[fn.shift()]).apply(npc,fn));
-		});
-		states.push(npc['npc_state'](npc_actions));
-	});
-}
-
-function create() {
-
-	//  We're going to be using physics, so enable the Arcade Physics system
-	game.physics.startSystem(Phaser.Physics.ARCADE);
-	game.stage.backgroundColor = 0xffffff;
-
-	createNPCs();
-	convertScriptToFunction();
-}
-
- function update() {
-	 game.physics.arcade.collide(people);
-	 states.forEach(function(state){
-		  state.run();
-	 });
- }
