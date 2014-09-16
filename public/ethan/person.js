@@ -4,15 +4,18 @@ Person = function(game, name){
 	this.name = name;
 	this.game.physics.arcade.enable(this);
 	this.body.collideWorldBounds = true;
-	this.animations.add('left', [0, 1, 2, 3], 10, true);
-	this.animations.add('right', [5, 6, 7, 8], 10, true);
-	this.animations.add('up', [4], 10, true);
-	this.animations.add('down', [4], 10, true);
 	this.addLabel(this.name);
 };
 
 Person.prototype = Phaser.Sprite.prototype; 
 Person.prototype.constructor = Phaser;
+
+Person.prototype.addAnimations = function(){
+	this.animations.add('left', [0, 1, 2, 3], 10, true);
+	this.animations.add('right', [5, 6, 7, 8], 10, true);
+	this.animations.add('up', [4], 10, true);
+	this.animations.add('down', [4], 10, true);
+}
 
 Person.prototype.addLabel = function(name){
 	var label = this.game.add.text(0,0, name, { font: '10px Helvetica Neue', fill: '#000' });
@@ -43,7 +46,7 @@ Person.prototype.go_to_loc = function(coord){
 	
 Person.prototype.go_to_person = function(name2){
 		var npc = this;
-		var npc2 = getnpc(name2);
+		var npc2 = people.getnpc(name2);
 		var close_enough = 70;
 		var that = this;
 		return function(){
@@ -70,7 +73,7 @@ Person.prototype.wait_for = function(name,name2){
 	};
 
 Person.prototype.wait_for_action = function(name, act){
-		var npc = getnpc(name);
+		var npc = people.getnpc(name);
 		return function(){
 			return npc.action === act;
 		};
