@@ -6,52 +6,22 @@ function preload() {
 var people;
 var m = {};
 var states = [];
-var hello;
 
-var init_player = function(player){
-	game.physics.arcade.enable(player);
-	player.body.collideWorldBounds = true;
-	player.animations.add('left', [0, 1, 2, 3], 10, true);
-	player.animations.add('right', [5, 6, 7, 8], 10, true);
-	player.animations.add('up', [4], 10, true);
-	player.animations.add('down', [4], 10, true);
-	
-
-	
+var Person = function(name){
+	Phaser.Sprite.apply(this, [game, game.world.randomX, game.world.randomY, 'dude']);
+	this.name = name;
 };
 
-var addLabel = function(player, name){
-		var label = this.game.add.text(0,0, name, { font: '10px Helvetica Neue', fill: '#000' });
-		label.x = Math.floor((player.width - player.width)*0.5);
-		label.y = Math.floor(player.height);
-		label.align = 'center';
-		player.addChild(label);
-};
+Person.prototype = Phaser.Sprite.prototype; 
+Person.prototype.constructor = Phaser;
 
-var createNPCs = function(){
-	people = new Phaser.Group(game, game.world, 'people', true, true, Phaser.Physics.Arcade);
-	//player = game.add.sprite(32, 32, 'dude');
-	 for (var i = 0; i < data.players.length; i++)
-    {
-        var sprite = people.create(game.world.randomX, 	game.world.randomY, 'dude');
-		init_player(sprite);
-		
-		
-	}
-	for(var i = 0; i< people.length; i++){
-		var p = people.getAt(i);
-		m[data.players[i]] = p;
-		addLabel(p, data.players[i]);
-	}
-	//people.add(player);
-};
-hello = {
-	within: function(c1,c2,t){
+
+Person.prototype.within = function(c1,c2,t){
 		return Math.abs(c1.x - c2.x) <= t && Math.abs(c1.y - c2.y) <= t;
-	},
+	};
 
-	go_to_loc : function(name, coord){
-		var npc = this.getnpc(name);
+Person.prototype.go_to_loc = function(coord){
+		var npc = this;
 		var close_enough = 30;
 		var that = this;
 		return function(){
@@ -63,10 +33,11 @@ hello = {
 				return false;
 			}
 		};
-	},
-	go_to_person: function(name,name2){
-		var npc = this.getnpc(name);
-		var npc2 = this.getnpc(name2);
+	};
+	
+Person.prototype.go_to_person = function(name2){
+		var npc = this;
+		var npc2 = getnpc(name2);
 		var close_enough = 70;
 		var that = this;
 		return function(){
@@ -74,13 +45,14 @@ hello = {
 				return true;
 			}
 			else{
-				that.update_npc(npc,npc2,70);
+				that.update_npc(npc2,70);
 				return false;
 			}
 		};
-	},
-	wait_for : function(name,name2){
-		var npc = this.getnpc(name);
+	};
+	
+Person.prototype.wait_for = function(name,name2){
+		var npc = this;
 		var coord = this.getnpc(name2);
 		var close_enough = 30;
 		var that = this;
@@ -89,28 +61,24 @@ hello = {
 				return true;
 			}
 		};
-	},
+	};
 
-	wait_for_action : function(name,act){
-		var npc = this.getnpc(name);
+Person.prototype.wait_for_action = function(name, act){
+		var npc = getnpc(name);
 		return function(){
 			return npc.action === act;
 		};
-	},
+	};
 
-	pause_animation: function(npc){
+Person.prototype.pause_animation = function(npc){
 		npc.animations.play("down");
 		npc.animations.stop();
 		npc.body.velocity.x = 0;
 		npc.body.velocity.y = 0;
-	},
-
-	getnpc : function(name){
-		return m[name];	
-	},
+	};
 	
-	npc_state: function(name,states){
-		var npc = this.getnpc(name);
+Person.prototype.npc_state = function(states){
+		var npc = this;//.getnpc(name);
 		npc.state_m = {
 			state:0,
 			paused:false,
@@ -140,11 +108,10 @@ hello = {
 			}
 		};
 		return npc.state_m;
-	},
-	say_pause :function(text,name,time){
-		console.log(this);
-		var npc = this.getnpc(name);
+	}
+	Person.prototype.say = function(text,time){
 		var that = this;
+		var npc = this;
 		return {
 			async:true,
 			init:function(){
@@ -163,9 +130,9 @@ hello = {
 			},
 			time:time
 		};
-	},
-	pause: function(name,time){
-		var npc = this.getnpc(name);
+	};
+	Person.prototype.pause = function(time){
+		var npc = this;
 		var that = this;
 		return {
 			async:true,
@@ -178,8 +145,9 @@ hello = {
 			},
 			time:time
 		};
-	},
-	update_npc : function(npc, goal, speed){
+	};
+	Person.prototype.update_npc = function(goal, speed){
+		var npc = this;
 		var diffx = npc.x - goal.x;
 		var diffy = npc.y - goal.y;
 		if(Math.abs(diffx) > 5 * Math.abs(diffy)){
@@ -214,29 +182,65 @@ hello = {
 				npc.animations.stop();
 			}
 		}
+	};
+
+var init_player = function(player){
+	game.physics.arcade.enable(player);
+	player.body.collideWorldBounds = true;
+	player.animations.add('left', [0, 1, 2, 3], 10, true);
+	player.animations.add('right', [5, 6, 7, 8], 10, true);
+	player.animations.add('up', [4], 10, true);
+	player.animations.add('down', [4], 10, true);
+};
+
+var addLabel = function(player, name){
+		var label = this.game.add.text(0,0, name, { font: '10px Helvetica Neue', fill: '#000' });
+		label.x = Math.floor((player.width - player.width)*0.5);
+		label.y = Math.floor(player.height);
+		label.align = 'center';
+		player.addChild(label);
+};
+
+var createNPCs = function(){
+	people = new Phaser.Group(game, game.world, 'people', true, true, Phaser.Physics.Arcade);
+	//player = game.add.sprite(32, 32, 'dude');
+	 for (var i = 0; i < data.players.length; i++)
+    {
+			var person = new Person(data.players[i]);
+			m[data.players[i]] = person;
+			init_player(person);	
+			people.add(person);
+			addLabel(person, data.players[i]);
 	}
 };
+
+function getnpc(name){
+		return m[name];	
+}
+
+function convertScriptToFunction(){
+	data.acting.forEach(function(npcObj){
+		var npc = getnpc(npcObj.name);
+		var npc_actions = [];
+		npcObj.fns.forEach(function(fn){
+			npc_actions.push((npc[fn.shift()]).apply(npc,fn));
+		});
+		states.push(npc['npc_state'](npc_actions));
+	});
+}
 
 function create() {
 
 	//  We're going to be using physics, so enable the Arcade Physics system
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 	game.stage.backgroundColor = 0xffffff;
-    
-	createNPCs();
-	//init_player(player);
 
-	data.acting.forEach(function(npc){
-		var npc_actions = [];
-		npc.fns.forEach(function(fn){
-			npc_actions.push((hello[fn.fn]).apply(hello,fn.args));
-		});
-		states.push(hello['npc_state'](npc.name, npc_actions));
-	});
-  }
+	createNPCs();
+	convertScriptToFunction();
+}
+
  function update() {
 	 game.physics.arcade.collide(people);
-	 //game.physics.arcade.collide(people, player);
 	 states.forEach(function(state){
 		  state.run();
 	 });
