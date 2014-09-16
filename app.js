@@ -26,6 +26,11 @@ app.get('/generate', function(req, res){
 	var select = req.query.q || JSON.stringify(inputData);
 	res.render('game', {data: JSON.parse(select)});
 });
+
+app.get('/generate2', function(req, res){
+	var select = req.query.q || JSON.stringify(inputData);
+	res.render('game2', {data: JSON.parse(select)});
+});
 app.use('/', routes);
 
 // catch 404 and forward to error handler
