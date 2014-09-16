@@ -16,8 +16,8 @@ var newGame = new (function(game){
 		//this.tilemap = new Tilemap(this.game);
 		//this.tilemap.preload();
 		
-		this.level = new Level(this.game);
-		this.level.preload();
+		this.decors = new Decors(this.game);
+		this.decors.preload();
 		
 		this.people = new People(this.game);
 		this.people.preload();
@@ -49,7 +49,7 @@ var newGame = new (function(game){
 	 this.game.stage.backgroundColor = 0xffffff;
 
 		//this.tilemap.create();
-		this.level.create();
+		this.decors.create();
 		this.player.create();
 		this.people.create();
 		this.bubble.create(this.player);
@@ -69,7 +69,7 @@ var newGame = new (function(game){
 	this.update = function() 
 	{
 		//this.tilemap.update();
-		this.level.update();
+		this.decors.update();
 		this.people.update();
     this.player.update();
 		this.bubble.update();
@@ -78,13 +78,13 @@ var newGame = new (function(game){
 		this.states.forEach(function(state){
 			state.run();
 		});
-		//somehow order matters!
-		//this.game.physics.arcade.collide(this.player.sprite, this.tilemap.layer3);
+	//somehow order matters!
+	//this.game.physics.arcade.collide(this.player.sprite, this.tilemap.layer3);
     //this.game.physics.arcade.collide(this.people.group, this.tilemap.layer3);
     this.game.physics.arcade.collide(this.people.group, this.player.sprite);
     this.game.physics.arcade.collide(this.people.group);
-   	this.game.physics.arcade.collide(this.player.sprite, this.level.platforms);
-	this.game.physics.arcade.collide(this.people.group, this.level.platforms);
+   	this.game.physics.arcade.collide(this.player.sprite, this.decors.platforms);
+	this.game.physics.arcade.collide(this.people.group, this.decors.platforms);
 	};
 
 	this.render = function(){
