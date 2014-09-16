@@ -75,19 +75,19 @@ SpeechBubble.wrapBitmapText = function (bitmapText, maxWidth) {
 
 Bubble = function (game){
 	this.game = game;
-	this.sbubble = null;
 };
 
 Bubble.prototype = {
 	preload: function(){
 		this.game.load.spritesheet('bubble-border', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbAgMAAADwuhzGAAAADFBMVEUAAAD///8AAADMzMyl8w72AAAAAXRSTlMAQObYZgAAADlJREFUCNdjYGDQWrWqgQGT5poaGpqFSTMtDQWCFRj0PyrR/3+B7cGgmf+/AroLk2bg////AwMGDQCR0FKxG5KiwAAAAABJRU5ErkJggg==', 9, 9);
         this.game.load.image('bubble-tail', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVAgMAAADUeU0FAAAADFBMVEUAAAAAAAD////MzMyoZCTaAAAAAXRSTlMAQObYZgAAAC1JREFUCNdjCA3NWrXUAY36/xULxYyN+hu1amUAAyYVwoBBhYYyYFDh/w9gUADQUTeozcOYAwAAAABJRU5ErkJggg==');
-        this.game.load.bitmapFont('8bitoperator', 'assets/font.png', 'assets/font.xml');
+        this.game.load.bitmapFont('8bitoperator', '/game/assets/font.png', '/game/assets/font.xml');
 	},
-	
+
 	create: function(player){
 		var sbub = this.game.world.add(new SpeechBubble(game, 110, 190, 100, "This is some tail woah dadklsjdal "));
 		player.sprite.addChild(sbub);
+        sbub.kill();
 		sbub.x = Math.floor(player.sprite.width/2);
 		sbub.y = Math.floor(0);
 	},
