@@ -5,6 +5,8 @@ Person = function(game, name, people){
 	this.name = name;
 	this.game.physics.arcade.enable(this);
 	this.body.collideWorldBounds = true;
+	this.body.bounce.x = 0.01;
+	this.body.bounce.y = 0.01;
 	this.addLabel(this.name);
 };
 
@@ -130,11 +132,17 @@ Person.prototype.npc_state = function(states){
 				if(npc.dialog !== undefined){
 					npc.dialog.destroy();
 				}
-				npc.dialog = that.game.add.text(npc.x, npc.y-20, text, { font: '12px monaco', fill: '#000000' });
+				npc.sbub = that.game.world.add(new SpeechBubble(game, 110, 190, 100, text));
+				npc.addChild(npc.sbub);
+        		npc.sbub.x = Math.floor(npc.width/2);
+				npc.sbub.y = Math.floor(0);
+				//npc.dialog = that.game.add.text(npc.x, npc.y-20, text, { font: '12px monaco', fill: '#000000' });
 				npc.action = text;
 			},
 			cleanup:function(){
-				npc.dialog.destroy();
+				npc.sbub.kill();
+				
+				//npc.dialog.destroy();
 				npc.action = null;
 				npc.state_m.paused = false;
 			},
@@ -158,41 +166,4 @@ Person.prototype.npc_state = function(states){
 	};
 	Person.prototype.update_npc = function(goal, speed){
 		this.game.physics.arcade.moveToObject(this, goal, speed);
-		/*
-		var npc = this;
-		var diffx = npc.x - goal.x;
-		var diffy = npc.y - goal.y;
-		if(Math.abs(diffx) > 5 * Math.abs(diffy)){
-			npc.body.velocity.y = 0;
-			if(diffx < 0){
-				npc.body.velocity.x = speed;
-				npc.animations.play("right");
-			}
-			else if (diffx > 0){
-				npc.body.velocity.x = -speed;
-				npc.animations.play("left");
-			}
-			else{
-				npc.body.velocity.x = 0;
-				npc.body.velocity.y = 0;
-				npc.animations.stop();
-			}
-		}
-		else{
-			npc.body.velocity.x = 0;
-			if(diffy < 0){
-				npc.body.velocity.y = speed;
-				npc.animations.play("down");
-			}
-			else if(diffy > 0){
-				npc.body.velocity.y = -speed;
-				npc.animations.play("up");
-			}
-			else{
-				npc.body.velocity.y = 0;
-				npc.body.velocity.x = 0;
-				npc.animations.stop();
-			}
-		}
-		*/
 	};
