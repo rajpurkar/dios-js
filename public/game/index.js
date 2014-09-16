@@ -83,7 +83,8 @@ var newGame = new (function(game){
     //this.game.physics.arcade.collide(this.people.group, this.tilemap.layer3);
     this.game.physics.arcade.collide(this.people.group);
     this.game.physics.arcade.collide(this.people.group, this.player.sprite);
-		this.game.physics.arcade.collide(this.sprites, this.level.platforms);
+	this.game.physics.arcade.collide(this.player.sprite, this.level.platforms);
+	this.game.physics.arcade.collide(this.people.group, this.level.platforms);
 	};
 
 	this.render = function(){
