@@ -4,6 +4,7 @@ Player = function(game, name) {
 	this.cursors = null;
 	this.label = null;
 	this.name = name;
+	this.speed = 4;
 };
 
 Player.prototype = {
@@ -42,42 +43,40 @@ Player.prototype = {
 		this.cursors = this.game.input.keyboard.createCursorKeys();
 	},
 
-	handleHorizontal: function () {
+	handleVertical: function () {
 		if(this.cursors.down.isDown)
 		{
-			this.sprite.body.velocity.y = 250;    	
-			this.sprite.animations.play('up');
+			this.sprite.body.y+=this.speed;    	
+			//this.sprite.animations.play('up');
 			return true;
 		}
 		else if (this.cursors.up.isDown)
 		{
-			this.sprite.body.velocity.y = -250;
-			this.sprite.animations.play('down');
+			this.sprite.body.y-=this.speed;
+			//this.sprite.animations.play('down');
 			return true;
 		}
 		else{
-			this.sprite.body.velocity.y = 0;
+			//this.sprite.body = 0;
 			return false;
 		}
 	},
 
-	handleVertical: function () {
+	handleHorizontal: function () {
 		if(this.cursors.left.isDown)
 		{
-			this.sprite.body.velocity.x = -250;
+			this.sprite.body.x-=this.speed;
 
 			this.sprite.animations.play('left');
 			return true;
 		}
 		else if(this.cursors.right.isDown)
 		{
-			this.sprite.body.velocity.x = 250;
-
+			this.sprite.body.x+=this.speed;
 			this.sprite.animations.play('right');
 			return true;
 		}
 		else{
-			this.sprite.body.velocity.x = 0;
 			return false;
 		}
 	},
@@ -88,9 +87,9 @@ Player.prototype = {
 	},
 
 	update: function() {
-		var vMove = this.handleVertical();
 		var hMove = this.handleHorizontal();
-
+		var vMove = this.handleVertical();
+		
 		if(!vMove && !hMove){
 			this.handleStop();
 		}
