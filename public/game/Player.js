@@ -5,6 +5,7 @@ Player = function(game, name) {
 	this.label = null;
 	this.name = name;
 	this.speed = 4;
+
 };
 
 Player.prototype = {
@@ -29,6 +30,7 @@ Player.prototype = {
 
 	createPlayer: function () {
 		this.sprite = this.game.add.sprite(this.game.world.width/2, this.game.world.height/2, 'dude');
+
 		this.addLabel();
 	},
 
@@ -37,6 +39,8 @@ Player.prototype = {
 		//  We need to enable physics on the player
 		this.game.physics.arcade.enable(this.sprite);
 		this.sprite.body.collideWorldBounds = true;
+		this.sprite.body.bounce.x = 0.01;
+		this.sprite.body.bounce.y = 0.01;
 		//  Our two animations, walking left and right
 		this.addAnimations();
 		//add keyboard motion
@@ -83,6 +87,7 @@ Player.prototype = {
 
 	handleStop: function () {
 		this.sprite.animations.stop();
+		this.sprite.body.velocity = 0;
 		this.sprite.frame = 4;
 	},
 
