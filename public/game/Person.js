@@ -1,7 +1,12 @@
-Person = function(game, name, people){
+Person = function(game, name, people, loc){
   this.people = people;
 	this.game = game;
-	Phaser.Sprite.apply(this, [this.game, this.game.world.randomX, this.game.world.randomY,'dude']);
+	if(loc){
+		Phaser.Sprite.apply(this, [this.game, loc[0], loc[1],'dude']);
+	}else{
+		Phaser.Sprite.apply(this, [this.game, this.game.world.randomX, this.game.world.randomY,'dude']);	
+	}
+	
 	this.name = name;
 	this.game.physics.arcade.enable(this);
 	this.body.collideWorldBounds = true;

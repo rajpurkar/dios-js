@@ -1,50 +1,45 @@
-{
-    "players": [
-        "doctor",
-        "nurse",
-        "patient",
-        "patient2",
-        "doctor2"
-    ],
-    "acting": [
-        {
-            "name": "doctor",
-            "fns": [
-                [
-                    "say",
-                    "I am a doctor",
-                    2000
-                ],
-                [
-                    "say",
-                    "(cutting cord...)",
-                    2000
-                ],
-                [
-                    "go_to_person",
-                    "nurse"
-                ],
-                [
-                    "say",
-                    "(instructing nurse...)",
-                    2000
-                ]
-            ]
-        },
-        {
-            "name": "nurse",
-            "fns": [
-                [
-                    "say",
-                    "I am a nurse",
-                    2000
-                ],
-                [
-                    "wait_for_action",
-                    "doctor",
-                    "(instructing nurse...)"
-                ]
-            ]
-        }
+[{
+    "name": "doctor",
+    "loc":[100,300],
+    "fns": [
+        [
+            "say",
+            "I am a doctor",
+            2000
+        ],
+        [
+            "say",
+            "(cutting cord...)",
+            2000
+        ],
+        [
+            "go_to_person",
+            "nurse"
+        ],
+        [
+            "say",
+            "(instructing nurse...)",
+            2000
+        ]
     ]
-}
+},
+{
+    "name": "nurse",
+    "loc":[400,300],
+    "fns": [
+        [
+            "say",
+            "I am a nurse",
+            2000
+        ],
+        [
+            "wait_for_action",
+            "doctor",
+            "(instructing nurse...)"
+        ]
+    ]
+},
+{"name":"patient"},
+{"name":"patient2"},
+{"name":"dr. watson"}
+]

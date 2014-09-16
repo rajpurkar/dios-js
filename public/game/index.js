@@ -32,14 +32,19 @@ var newGame = new (function(game){
 	};
 	
   function convertScriptToFunction(people, states){
-		data.acting.forEach(function(npcObj){
+  	console.log(data);
+		data.forEach(function(npcObj){
 			console.log(npcObj.name);
 			var npc = people.getnpc(npcObj.name);
 			var npc_actions = [];
-			npcObj.fns.forEach(function(fn){
+			if(npcObj.fns){
+				npcObj.fns.forEach(function(fn){
 				npc_actions.push((npc[fn[0]]).apply(npc,fn.slice(1, fn.length)));
 			});
-			states.push(npc['npc_state'](npc_actions));
+				if(npc_actions.length > 0){
+					states.push(npc['npc_state'](npc_actions));	
+				}	
+			}
 		});
 	}
 	
@@ -78,13 +83,13 @@ var newGame = new (function(game){
 		this.states.forEach(function(state){
 			state.run();
 		});
-	//somehow order matters!
-	//this.game.physics.arcade.collide(this.player.sprite, this.tilemap.layer3);
-    //this.game.physics.arcade.collide(this.people.group, this.tilemap.layer3);
-    this.game.physics.arcade.collide(this.people.group, this.player.sprite);
-    this.game.physics.arcade.collide(this.people.group);
-   	this.game.physics.arcade.collide(this.player.sprite, this.decors.platforms);
-	this.game.physics.arcade.collide(this.people.group, this.decors.platforms);
+		//somehow order matters!
+		//this.game.physics.arcade.collide(this.player.sprite, this.tilemap.layer3);
+	    //this.game.physics.arcade.collide(this.people.group, this.tilemap.layer3);
+	    this.game.physics.arcade.collide(this.people.group, this.player.sprite);
+	    this.game.physics.arcade.collide(this.people.group);
+	   	this.game.physics.arcade.collide(this.player.sprite, this.decors.platforms);
+		this.game.physics.arcade.collide(this.people.group, this.decors.platforms);
 	};
 
 	this.render = function(){

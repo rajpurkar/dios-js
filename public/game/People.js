@@ -28,9 +28,9 @@ People.prototype = {
 	createNPCs: function(){
 		this.group = new Phaser.Group(this.game, this.game.world, 'people', false, true, Phaser.Physics.Arcade);
 		game.physics.arcade.enable(this.group);
-		for (var i = 0; i < data.players.length; i++){
-			var person = new Person(this.game, data.players[i], this);
-			this.setnpc(data.players[i], person);
+		for (var i = 0; i < data.length; i++){
+			var person = new Person(this.game, data[i].name, this, data[i].loc);
+			this.setnpc(data[i].name, person);
 			this.group.add(person);
 		}
 	}
