@@ -24,40 +24,12 @@ html(lang='en')
 					.col-md-7
 						#phaser
 					.col-md-5
-						form#mainF(action="/generate2", method="get")
+						form#mainF(action="/", method="get")
 							input.hidden#dat(type="text", name="q")
 							button.btn.col-lg-12#submit(type="submit")
 								| Submit
-						pre#js(contenteditable=true)
-							!{JSON.stringify(data, null, 5)}
+						pre#js(contenteditable=true) !{ JSON.stringify(data, null, 5) }
 		script.
 			var data =!{JSON.stringify(data)};
 		script(type='text/javascript', src='/game/index.js')
-		script.
-			$('#mainF').submit(function(){
-				$('#dat').val(JSON.stringify(JSON.parse($('#js').text())));
-			});
-
-			function syntaxHighlight(json) {
-			    if (typeof json != 'string') {
-			         json = JSON.stringify(json, undefined, 2);
-			    }
-			    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-			    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-			        var cls = 'number';
-			        if (/^"/.test(match)) {
-			            if (/:$/.test(match)) {
-			                cls = 'key';
-			            } else {
-			                cls = 'string';
-			            }
-			        } else if (/true|false/.test(match)) {
-			            cls = 'boolean';
-			        } else if (/null/.test(match)) {
-			            cls = 'null';
-			        }
-			        return '<span class="' + cls + '">' + match + '</span>';
-			    });
-			}
-
-			$('#js').html(syntaxHighlight($('#js').text()));
+		script(type='text/javascript', src='/game/js/uiassist.js')
