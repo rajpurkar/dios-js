@@ -4,10 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var inputData = require('./public/ethan/input.json');
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
+var inputData = require('./public/game/assets/input.json');
 var app = express();
 
 // view engine setup
@@ -22,16 +19,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public'), {maxAge: '1d'}));
 
-app.get('/generate', function(req, res){
-	var select = req.query.q || JSON.stringify(inputData);
-	res.render('game', {data: JSON.parse(select)});
+app.get('/', function(req, res){
+    var select = req.query.q || JSON.stringify(inputData);
+    res.render('index', {data: JSON.parse(select)});
 });
-
-app.get('/generate2', function(req, res){
-	var select = req.query.q || JSON.stringify(inputData);
-	res.render('game2', {data: JSON.parse(select)});
-});
-app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -63,6 +54,5 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
 
 module.exports = app;

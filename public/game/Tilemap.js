@@ -25,8 +25,6 @@ Tilemap.prototype = {
 	},
 
 	create: function() {
-		//this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
-		//this.game.input.onDown.add(gofull, this);
 		this.map = this.game.add.tilemap('map');
 		this.map.addTilesetImage('tiles');	
 		this.layer1 = this.map.createLayer('background');
@@ -37,10 +35,10 @@ Tilemap.prototype = {
 		this.layer3.resizeWorld();
 
 		this.map.setCollisionByExclusion([],true,this.layer3);
-		this.map.setTileIndexCallback([7410], this.inBattlezone, this, this.layer2);
+		this.map.setTileIndexCallback([7410], this.inInteractionZone, this, this.layer2);
 	},
-	inBattlezone: function() {
-		console.log("time for a battle");
+	inInteractionZone: function() {
+		console.log("Time for an interaction.");
 	},
 
 	update: function() {

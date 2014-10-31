@@ -1,4 +1,4 @@
-/* NOT YET WORKING! LOOK AT game/demo/Game.js to help me integrate*/
+/* NOT YET WORKING! LOOK AT game/pathfinding/Game.js to start integration*/
 
 Path = function (game, tilemap, walkables, sprite){
 	this.game = game;
@@ -24,3 +24,20 @@ Path.prototype = {
 		return {x:currentTile.worldX, y: currentTile.worldY};
 	},
 };
+
+//adding the path. Not yet completed/used
+function movePlayer(){
+	var pathy = new Path(this.game, this.tilemap, [0], this.player.sprite);
+	var that = this;
+	pathy.findPathTo(this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, function(path){
+		if(path.length >0){
+			var tween = that.game.add.tween(that.player.sprite.body);
+			for(var i =0; i < path.length; i++){
+				var wc = pathy.getWorldCoords(path[i]);
+				tween.to({x: wc.x, y:wc.y}, 100, Phaser.Easing.Linear.None);
+			}
+			tween.interpolation(Phaser.Math.bezierInterpolation)
+			.start();
+		}
+	});
+}

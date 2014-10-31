@@ -1,18 +1,17 @@
 var newGame = new (function(game){
 	this.people = null;
 	this.player = null;
-	this.level = null;
 	this.hud = null;
 	this.path = null;
 	this.tilemap = null;
 	this.person = null;
-	this.sprites = null;
 	this.bubble = null;
 	this.game = game; 
 	this.states = null;
 	
 	this.preload = function()
 	{
+		//Use when there is a tilemap background
 		//this.tilemap = new Tilemap(this.game);
 		//this.tilemap.preload();
 		
@@ -31,28 +30,14 @@ var newGame = new (function(game){
 		this.hud = new HUD(this.game);
 	};
 	
-  function convertScriptToFunction(people, states){
-  	console.log(data);
-		data.forEach(function(npcObj){
-			console.log(npcObj.name);
-			var npc = people.getnpc(npcObj.name);
-			var npc_actions = [];
-			if(npcObj.fns){
-				npcObj.fns.forEach(function(fn){
-				npc_actions.push((npc[fn[0]]).apply(npc,fn.slice(1, fn.length)));
-			});
-				if(npc_actions.length > 0){
-					states.push(npc['npc_state'](npc_actions));	
-				}	
-			}
-		});
-	}
-	
 	this.create = function()
 	{
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-	 this.game.stage.backgroundColor = 0xffffff;
-
+		this.game.stage.backgroundColor = 0xffffff;
+		//Add these lines if want to enable full screen mode
+		this.game.input.onDown.add(gofull, this);
+		//this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT; //stretch screen; other options available
+		
 		//this.tilemap.create();
 		this.decors.create();
 		this.player.create();
@@ -63,58 +48,59 @@ var newGame = new (function(game){
 		
 		/*Path stuff which is not working*/
     	//this.game.input.onDown.add(movePlayer,this);
-		
-		this.game.camera.follow(this.player.sprite);
 
-		this.states = [];
-		convertScriptToFunction(this.people, this.states);
-		
-	};
+    	this.game.camera.follow(this.player.sprite);
 
-	this.update = function() 
-	{
+    	this.states = [];
+    	convertScriptToFunction(this.people, this.states);
+
+    };
+
+    this.update = function() 
+    {
 		//this.tilemap.update();
 		this.decors.update();
 		this.people.update();
-    this.player.update();
+		this.player.update();
 		this.bubble.update();
 		
 
 		this.states.forEach(function(state){
 			state.run();
 		});
+		
 		//somehow order matters!
 		//this.game.physics.arcade.collide(this.player.sprite, this.tilemap.layer3);
 	    //this.game.physics.arcade.collide(this.people.group, this.tilemap.layer3);
 	    this.game.physics.arcade.collide(this.people.group, this.player.sprite);
 	    this.game.physics.arcade.collide(this.people.group);
-	   	this.game.physics.arcade.collide(this.player.sprite, this.decors.platforms);
-		this.game.physics.arcade.collide(this.people.group, this.decors.platforms);
+	    this.game.physics.arcade.collide(this.player.sprite, this.decors.platforms);
+	    this.game.physics.arcade.collide(this.people.group, this.decors.platforms);
 	};
 
 	this.render = function(){
-		//this.game.debug.cameraInfo(this.game.camera, 32, 32);
-		//this.game.debug.spriteCoords(this.player.sprite, 32, 110);
-    //this.game.debug.spriteCoords(this.people.group, 32, 110);
+		debug = false; //set to true when wanting to see stats
+		if(debug === true){
+			this.game.debug.cameraInfo(this.game.camera, 32, 32);
+			this.game.debug.spriteCoords(this.player.sprite, 32, 110);
+			this.game.debug.spriteCoords(this.people.group, 32, 110);
+		}
 	};
-	
 })(game);
 
-
-function movePlayer(){
-	var pathy = new Path(this.game, this.tilemap, [0], this.player.sprite);
-	var that = this;
-	pathy.findPathTo(this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, function(path){
-    if(path.length >0){
-      
-		var tween = that.game.add.tween(that.player.sprite.body);
-		for(var i =0; i < path.length; i++){
-			var wc = pathy.getWorldCoords(path[i]);
-			tween.to({x: wc.x, y:wc.y}, 100, Phaser.Easing.Linear.None);
+//takes in the script, and runs the game from it
+function convertScriptToFunction(people, states){
+	data.forEach(function(npcObj){
+		var npc = people.getnpc(npcObj.name);
+		var npc_actions = [];
+		if(npcObj.fns){
+			npcObj.fns.forEach(function(fn){
+				npc_actions.push((npc[fn[0]]).apply(npc,fn.slice(1, fn.length)));
+			});
+			if(npc_actions.length > 0){
+				states.push(npc['npc_state'](npc_actions));	
+			}	
 		}
-		tween.interpolation(Phaser.Math.bezierInterpolation)
-		.start();
-    }
 	});
 }
 

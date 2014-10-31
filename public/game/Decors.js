@@ -7,16 +7,11 @@ Decors.prototype = {
 	preload: function() {
 		this.game.load.image('bed', '/game/assets/bed2.png');
 		this.game.load.image('table', '/game/assets/table.jpg');
-		this.game.load.image('bg', '/game/assets/simplebg.jpg');
 	},
 
 	create: function() {
-
-		//background = game.add.tileSprite(0, 0, 600, 600, "bg");
-		//  The platforms group contains the ground and the 2 ledges we can jump on
 		this.platforms = this.game.add.group();
 		this.game.physics.arcade.enable(this.platforms);
-		//  We will enable physics for any object that is created in this group
 		this.platforms.enableBody = true;
 
 		// Here we create the ground.
