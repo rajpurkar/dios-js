@@ -1,4 +1,4 @@
-[{
+{"people":[{
     "name": "doctor",
     "loc":[100,300],
     "fns": [
@@ -47,4 +47,5 @@
 {"name":"patient"},
 {"name":"patient2"},
 {"name":"dr. watson"}
-]
+],
+"assets":[]}

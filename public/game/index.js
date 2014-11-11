@@ -21,7 +21,7 @@ var newGame = new (function(game){
 		this.people = new People(this.game);
 		this.people.preload();
 		
-		this.player = new Player(this.game, 'Pranav');
+		this.player = new Player(this.game, 'Stephany');
 		this.player.preload();
 		
 		this.bubble = new Bubble(this.game);
@@ -89,9 +89,9 @@ var newGame = new (function(game){
 })(game);
 
 //takes in the script, and runs the game from it
-function convertScriptToFunction(people, states){
-	data.forEach(function(npcObj){
-		var npc = people.getnpc(npcObj.name);
+function convertScriptToFunction(ppl, states){
+	data.people.forEach(function(npcObj){
+		var npc = ppl.getnpc(npcObj.name);
 		var npc_actions = [];
 		if(npcObj.fns){
 			npcObj.fns.forEach(function(fn){
