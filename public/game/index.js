@@ -89,9 +89,16 @@ var newGame = new (function(game){
 })(game);
 
 //takes in the script, and runs the game from it
+<<<<<<< HEAD
 function convertScriptToFunction(ppl, states){
 	data.people.forEach(function(npcObj){
 		var npc = ppl.getnpc(npcObj.name);
+=======
+function convertScriptToFunction(people, states){
+	console.log(data["people"]);
+	data.forEach(function(npcObj){ // extract static assets. data["assets"].forEach
+		var npc = people.getnpc(npcObj.name);
+>>>>>>> FETCH_HEAD
 		var npc_actions = [];
 		if(npcObj.fns){
 			npcObj.fns.forEach(function(fn){
