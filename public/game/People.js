@@ -6,7 +6,14 @@ People = function(game){
 
 People.prototype = {
 	preload: function(){
-		//this.game.load.spritesheet('dude', '/game/assets/dude.png', 32, 48);
+		this.game.load.spritesheet('doctor', '/game/assets/doctor.png', 26, 46);
+		this.game.load.spritesheet('doctor1', '/game/assets/doctor.png', 26, 46);
+		this.game.load.spritesheet('nurse', '/game/assets/nurse.png', 32, 48);
+		this.game.load.spritesheet('dude', '/game/assets/dude.png', 32, 48);
+		this.game.load.spritesheet('baby', '/game/assets/baby.png', 30,30);
+		this.game.load.spritesheet('Chandler', '/game/assets/male-patient2.png', 20, 48);
+		this.game.load.spritesheet('Ross', '/game/assets/patient-thin.png', 20, 48);
+
 	},
 
 	create: function(){

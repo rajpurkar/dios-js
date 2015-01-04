@@ -10,14 +10,15 @@ Player = function(game, name) {
 
 Player.prototype = {
 	preload: function () {
-		this.game.load.spritesheet('dude', '/game/assets/dude.png', 32, 48);
+		this.game.load.spritesheet('you', '/game/assets/female-patient.png', 32, 48);
 	},
 
 	addAnimations: function() {
-		this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
-		this.sprite.animations.add('right', [5, 6, 7, 8], 10, true);
-		this.sprite.animations.add('up', [4], 10, true);
-		this.sprite.animations.add('down', [4], 10, true);
+		this.sprite.animations.add('left', [7, 6, 7, 8], 10, true);
+		this.sprite.animations.add('right', [4, 5, 4, 5], 10, true);
+		this.sprite.animations.add('up', [3, 2, 3, 2], 10, true);
+		this.sprite.animations.add('down', [1, 9, 1, 0], 10, true);
+
 	},
 
 	addLabel: function(){
@@ -29,7 +30,7 @@ Player.prototype = {
 	},
 
 	createPlayer: function () {
-		this.sprite = this.game.add.sprite(this.game.world.width/2, this.game.world.height/2, 'dude');
+		this.sprite = this.game.add.sprite(this.game.world.width/2-100, this.game.world.height/2-100, 'you');
 
 		this.addLabel();
 	},
@@ -51,13 +52,13 @@ Player.prototype = {
 		if(this.cursors.down.isDown)
 		{
 			this.sprite.body.y+=this.speed;    	
-			//this.sprite.animations.play('up');
+			this.sprite.animations.play('down');
 			return true;
 		}
 		else if (this.cursors.up.isDown)
 		{
 			this.sprite.body.y-=this.speed;
-			//this.sprite.animations.play('down');
+			this.sprite.animations.play('up');
 			return true;
 		}
 		else{
@@ -88,7 +89,7 @@ Player.prototype = {
 	handleStop: function () {
 		this.sprite.animations.stop();
 		this.sprite.body.velocity = 0;
-		this.sprite.frame = 4;
+		this.sprite.frame = 1;
 	},
 
 	update: function() {

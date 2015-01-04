@@ -2,7 +2,7 @@ doctype html
 html(lang='en')
 	head
 		meta(charset='UTF-8')
-		title Augur Game
+		title Augur Game (in progress)
 		script(type='text/javascript', src='/vendor/jquery.js')
 		script(type='text/javascript', src='/vendor/bootstrap.min.js')
 		link(rel="stylesheet", href='/vendor/bootstrap.min.css')
@@ -27,8 +27,8 @@ html(lang='en')
 						form#mainF(action="/", method="get")
 							input.hidden#dat(type="text", name="q")
 							button.btn.col-lg-12#submit(type="submit")
-								| Submit
-						pre#js(contenteditable=true) !{ JSON.stringify(data, null, 5) }
+								| Submit!!
+						pre#js(contenteditable=true) !{ JSON.stringify(data, null, 6) }
 		script.
 			var data =!{JSON.stringify(data)};
 		script(type='text/javascript', src='/game/index.js')

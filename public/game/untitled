@@ -1,0 +1,16 @@
+for (var i = 0; i < assets.length; i++){
+			var decor_item = this.platforms.create(assets[i].loc_x, data.assets[i].loc_x, assets[i].name);
+			decor_item.scale.setTo(0.35,0.35);
+			decor_item.body.immovable = true;
+		}
+
+
+"assets": [ 
+    { "name": "bed", 
+      "loc": [100,300] 
+    }
+]
+
+"assets": ["bed", "table"]
+
+http://localhost:3000/?q=%7B%22people%22%3A%5B%7B%22name%22%3A%22doctor%22%2C%22loc%22%3A%5B100%2C150%5D%2C%22fns%22%3A%5B%5B%22say%22%2C%22I+am+a+doctor%22%2C2000%5D%2C%5B%22say%22%2C%22%28cutting+cord...%29%22%2C2000%5D%2C%5B%22go_to_person%22%2C%22nurse%22%5D%2C%5B%22say%22%2C%22%28instructing+nurse...%29%22%2C2000%5D%5D%7D%2C%7B%22name%22%3A%22nurse%22%2C%22loc%22%3A%5B100%2C300%5D%2C%22fns%22%3A%5B%5B%22say%22%2C%22I+am+a+nurse%22%2C2000%5D%2C%5B%22wait_for_action%22%2C%22doctor%22%2C%22%28instructing+nurse...%29%22%5D%2C%5B%22say%22%2C%22hey+doc%22%2C2000%5D%5D%7D%2C%7B%22name%22%3A%22patient%22%7D%2C%7B%22name%22%3A%22patient2%22%7D%2C%7B%22name%22%3A%22dr.+watson%22%7D%5D%2C%22assets%22%3A%5B%7B%22name%22%3A%22bed%22%2C%22loc%22%3A%5B200%2C150%5D%7D%2C%7B%22name%22%3A%22bed%22%2C%22loc%22%3A%5B350%2C150%5D%7D%2C%7B%22name%22%3A%22bed%22%2C%22loc%22%3A%5B430%2C150%5D%7D%5D%7D

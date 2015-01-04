@@ -1,51 +1,129 @@
-{"people":[{
-    "name": "doctor",
-    "loc":[100,300],
-    "fns": [
-        [
-            "say",
-            "I am a doctor",
-            2000
-        ],
-        [
-            "say",
-            "(cutting cord...)",
-            2000
-        ],
-        [
-            "go_to_person",
-            "nurse"
-        ],
-        [
-            "say",
-            "(instructing nurse...)",
-            2000
+{"people": [
+    {
+        "name": "doctor",
+        "loc":[100,150],
+        "fns": [
+            [
+                "say",
+                "Hey there, nurse!",
+                2000
+            ],
+            [
+                "go_to_person",
+                "nurse"
+            ],
+            [
+                "say",
+                "(instructing nurse...)",
+                2000
+            ],
+            [
+                "go_to_person",
+                "Ross"
+            ], 
+            [
+                "say",
+                "Poof - I've cured you!",
+                2000
+            ]
         ]
-    ]
-},
-{
-    "name": "nurse",
-    "loc":[400,300],
-    "fns": [
-        [
-            "say",
-            "I am a nurse",
-            2000
-        ],
-        [
-            "wait_for_action",
-            "doctor",
-            "(instructing nurse...)"
-        ],
-        [   
-            "say",
-            "hey doc",
-            2000
+    },
+    {
+        "name": "nurse",
+        "loc":[100,300],
+        "fns": [
+             [
+                "wait_for_action",
+                "doctor",
+                "Hey there, nurse!"
+            ],
+            [
+                "say",
+                "Good morning!",
+                4000
+            ],
+            [
+                "wait_for_action",
+                "doctor",
+                "(instructing nurse...)"
+            ],
+            [   
+                "say",
+                "Completely!",
+                4000
+            ]
         ]
-    ]
-},
-{"name":"patient"},
-{"name":"patient2"},
-{"name":"dr. watson"}
+    },
+    {
+        "name":"baby",
+        "loc":[440,265],
+        "fns": [
+            [
+                "say",
+                "wa wa wa",
+                2000
+            ]
+        ]
+    },
+    {
+        "name":"Chandler",
+        "loc":[440,150], 
+         "fns": [
+            [
+                "go_to_loc",
+                "30, 30"
+            ],
+            [
+                "wait_for_action",
+                "doctor",
+                "Poof - I've cured you!"
+            ], 
+            [
+                "say",
+                "Wow I hate hospitals!",
+                2000
+            ]
+            
+        ]
+    },
+    {
+        "name":"Ross",
+        "loc":[365,150], 
+        "fns": [
+            [
+                "say",
+                "Wow, I'm sick!",
+                2000
+            ],
+            [
+                "wait_for_action",
+                "doctor",
+                "Poof - I've cured you!"
+            ], 
+            [
+                "say",
+                "All better!",
+                2000
+            ],
+            [
+                "wait_for_action",
+                "doctor",
+                "(instructing nurse...)"
+            ]
+        ]
+    }
 ],
-"assets":[]}
+
+"assets": [ 
+    { "name": "bed", 
+      "loc": [430,250] 
+    }, 
+    { "name": "bed", 
+      "loc": [350,150] 
+    }, 
+    { "name": "bed", 
+      "loc": [430,150] 
+    }
+]
+
+}

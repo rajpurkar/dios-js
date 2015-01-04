@@ -1,11 +1,22 @@
 Person = function(game, name, people, loc){
   this.people = people;
 	this.game = game;
-	if(loc){
+	if(name=='doctor'){
+		Phaser.Sprite.apply(this, [this.game, loc[0], loc[1],'doctor']);
+	}else if(name=='nurse'){
+		Phaser.Sprite.apply(this, [this.game, loc[0], loc[1],'nurse']);
+	}else if(name=='baby'){
+		Phaser.Sprite.apply(this, [this.game, loc[0], loc[1],'baby']);
+	}else if(name=='Chandler'){
+		Phaser.Sprite.apply(this, [this.game, loc[0], loc[1],'Chandler']);
+	}else if(name=='Ross'){
+		Phaser.Sprite.apply(this, [this.game, loc[0], loc[1],'Ross']);
+	}else if(loc){
 		Phaser.Sprite.apply(this, [this.game, loc[0], loc[1],'dude']);
 	}else{
 		Phaser.Sprite.apply(this, [this.game, this.game.world.randomX, this.game.world.randomY,'dude']);	
 	}
+	
 	
 	this.name = name;
 	this.game.physics.arcade.enable(this);
@@ -19,10 +30,10 @@ Person.prototype = Phaser.Sprite.prototype;
 Person.prototype.constructor = Phaser;
 
 Person.prototype.addAnimations = function(){
-	this.animations.add('left', [0, 1, 2, 3], 10, true);
-	this.animations.add('right', [5, 6, 7, 8], 10, true);
-	this.animations.add('up', [4], 10, true);
-	this.animations.add('down', [4], 10, true);
+	this.animations.add('left', [3, 4, 5], 10, true);
+	this.animations.add('right', [6, 7, 8], 10, true);
+	this.animations.add('up', [0, 1, 2], 10, true);
+	this.animations.add('down', [9, 10, 11], 10, true);
 }
 
 Person.prototype.addLabel = function(name){
@@ -47,6 +58,7 @@ Person.prototype.go_to_loc = function(coord){
 			}
 			else{
 				that.update_npc(npc,coord,70);
+				console.log(coord);
 				return false;
 			}
 		};
