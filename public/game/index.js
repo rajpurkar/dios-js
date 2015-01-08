@@ -8,6 +8,8 @@ var newGame = new (function(game){
 	this.bubble = null;
 	this.game = game; 
 	this.states = null;
+	this.assets = null;
+
 	
 	this.preload = function()
 	{
@@ -21,7 +23,7 @@ var newGame = new (function(game){
 		this.people = new People(this.game);
 		this.people.preload();
 		
-		this.player = new Player(this.game, 'Stephany');
+		this.player = new Player(this.game, 'YOU');
 		this.player.preload();
 		
 		this.bubble = new Bubble(this.game);
@@ -39,20 +41,30 @@ var newGame = new (function(game){
 		//this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT; //stretch screen; other options available
 		
 		//this.tilemap.create();
-		this.decors.create();
-		this.player.create();
-		this.people.create();
-		this.bubble.create(this.player);
-		this.hud.create();
 		
 		
 		/*Path stuff which is not working*/
     	//this.game.input.onDown.add(movePlayer,this);
 
-    	this.game.camera.follow(this.player.sprite);
+		this.assets = [];
+		convertScriptToFunction_assets(this.assets);
+		this.decors.create(this.assets);
+
+		this.player.create();
+		this.people.create();
+		this.bubble.create(this.player);
+		// this.hud.create();
+
+		this.game.camera.follow(this.player.sprite);
 
     	this.states = [];
+    	
     	convertScriptToFunction(this.people, this.states);
+    	// console.log(this.assets);
+    	
+    	
+
+    	
 
     };
 
@@ -88,8 +100,18 @@ var newGame = new (function(game){
 	};
 })(game);
 
+function convertScriptToFunction_assets(assets){
+	
+	data.assets.forEach(function(assetObj){
+		assets.push(assetObj);
+
+	});
+	
+}
+
 //takes in the script, and runs the game from it
 function convertScriptToFunction(ppl, states){
+
 	data.people.forEach(function(npcObj){
 		var npc = ppl.getnpc(npcObj.name);
 		var npc_actions = [];
@@ -102,6 +124,11 @@ function convertScriptToFunction(ppl, states){
 			}	
 		}
 	});
+	// decors.create();
+	// data.assets.forEach(function(assetObj){
+	// 	assets.push(assetObj);
+	// });
+	
 }
 
-var game = new Phaser.Game(600, 600, Phaser.AUTO, 'phaser', { preload: newGame.preload, create: newGame.create, update: newGame.update, render: newGame.render });
+var game = new Phaser.Game(600, 400, Phaser.AUTO, 'phaser', { preload: newGame.preload, create: newGame.create, update: newGame.update, render: newGame.render });

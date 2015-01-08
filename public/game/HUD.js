@@ -5,9 +5,9 @@ HUD = function(game) {
 	this.scoreText = null;
 };
 
-HUD.prototype = {
+// // HUD.prototype = {
 
-	create: function() {
-		this.scoreText = this.game.add.text(16, 16, 'Hospital', { fontSize: '32px', fill: '#000' });
-	},
-};
+// // 	create: function() {
+// // 		this.scoreText = this.game.add.text(16, 16, 'Hospital Scene', { fontSize: '32px', fill: '#000' });
+// // 	},
+// // };
